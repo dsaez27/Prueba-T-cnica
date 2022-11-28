@@ -2,7 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 export const DarkModeButton = () => {
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
+    const [theme, setTheme] = useState(
+        localStorage.getItem("theme") || "system"
+    );
     const element = document.documentElement;
     const darkMode = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -25,7 +27,7 @@ export const DarkModeButton = () => {
 
     return (
         <div
-            className="fixed top-5 right-10 duration-100 rounded flex justify-center items-center cursor-pointer p-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+            className="fixed top-5 right-10 duration-300 rounded flex justify-center items-center cursor-pointer p-2 dark:bg-vibrantDark hover:bg-grayLight dark:hover:bg-vibrantDarker transition-colors"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             title="Toggle dark mode"
         >

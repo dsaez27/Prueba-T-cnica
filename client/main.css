@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* input y Select autofill color */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus,
+.dark select > option:-webkit-autofill,
+.dark select > option:-webkit-autofill:hover,
+.dark select > option:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 30px #000820 inset !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select > option:-webkit-autofill,
+select > option:-webkit-autofill:hover,
+select > option:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+select[value="Seleccione una región"] {
+    color: #000820;
+}
