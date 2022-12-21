@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-export const DarkModeButton = () => {
+export const Button = () => {
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") || "system"
     );
@@ -29,7 +29,7 @@ export const DarkModeButton = () => {
         <div
             className="fixed top-5 right-10 duration-300 rounded flex justify-center items-center cursor-pointer p-2 dark:bg-vibrantDark hover:bg-grayLight dark:hover:bg-vibrantDarker transition-colors"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            title="Toggle dark mode"
+            title="Modo Oscuro"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"

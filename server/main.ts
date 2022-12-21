@@ -7,7 +7,10 @@ Meteor.startup(async () => {
 });
 
 Meteor.methods({
-    getPacientes: async () => {
-        return await PacientesCollection.find().fetch();
+    add: async (paciente: any) => {
+        return await PacientesCollection.insert(paciente);
+    },
+    removePaciente: async (id: string) => {
+        return await PacientesCollection.remove(id);
     },
 });
