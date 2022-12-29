@@ -40,7 +40,6 @@ export const Input: React.FC<Props> = ({
                             case "rut":
                                 e.target.value = formatRut(str);
                                 str === "-" && (e.target.value = "");
-                                
                                 break;
                             case "codigo_postal":
                                 e.target.value = str.replace(/\D/g, "");

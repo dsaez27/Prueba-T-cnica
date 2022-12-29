@@ -13,4 +13,3 @@ export interface Paciente {
 }
 
 export const PacientesCollection = new Mongo.Collection<Paciente>("pacientes");
-

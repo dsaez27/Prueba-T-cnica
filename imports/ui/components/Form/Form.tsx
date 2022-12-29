@@ -9,16 +9,20 @@ import { Input } from "./Input";
 import Swal from "sweetalert2";
 import { Select } from "./Select";
 import { useMutation } from "react-query";
-import { formatRut } from "rutlib/lib";
 
-const schema = yup.object({
+const formSchema = yup.object().shape({
     nombres: yup.string().required("Nombre es requerido"),
     apellido_paterno: yup.string().required("Apellido paterno es requerido"),
     apellido_materno: yup.string().required("Apellido materno es requerido"),
     rut: yup
         .string()
         .max(12, "Rut debe tener 12 caracteres")
-        .required("Rut es requerido"),
+        .required("Rut es requerido")
+        .test("is-rut", "Rut ya existe", (value) => {
+            return PacientesCollection.findOne({ rut: value })?.rut === value
+                ? false
+                : true;
+        }),
     region: yup.string().required("Región es requerida"),
     comuna: yup.string().required("Comuna es requerida"),
     codigo_postal: yup
@@ -35,53 +39,49 @@ export const Form = () => {
         register,
         control,
         handleSubmit,
-        formState: { errors },
         reset,
+        formState: { errors },
     } = useForm<Paciente>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(formSchema),
     });
 
-    const region = useWatch({
+    const regionControl = useWatch({
         control,
         name: "region",
     });
 
-    const rut = useWatch({
-        control,
-        name: "rut",
-    });
-
-    const rutExist = PacientesCollection.findOne({
-        rut: formatRut(rut),
-    })?.rut;
-
     useEffect(() => {
-        region &&
+        regionControl &&
             data.regiones.find(
                 (item: any) =>
-                    item.region === region && setComunas(item.comunas)
+                    item.region === regionControl && setComunas(item.comunas)
             );
-    }, [region]);
+    }, [regionControl]);
+
+    const { mutate } = useMutation(submitForm, {
+        onSuccess: () => {
+            Swal.fire({
+                title: "Paciente registrado",
+                text: "Paciente registrado correctamente",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        },
+        onError: () => {
+            Swal.fire({
+                title: "Error",
+                text: "Ha ocurrido un error al registrar paciente",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        },
+    });
 
     const formSubmit = async (data: Paciente) => {
-        !rutExist
-            ? (PacientesCollection.insert(data),
-              Swal.fire({
-                  icon: "success",
-                  title: "Paciente agregado",
-                  showConfirmButton: false,
-                  timer: 2000,
-                  timerProgressBar: true,
-              }),
-              reset())
-            : Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "Paciente ya existe",
-                  showConfirmButton: false,
-                  timer: 2000,
-                  timerProgressBar: true,
-              });
+        await mutate(data);
+        reset();
     };
 
     return (
@@ -150,4 +150,9 @@ export const Form = () => {
             </form>
         </div>
     );
+};
+
+const submitForm = async (data: Paciente) => {
+    const res = await PacientesCollection.insert(data);
+    return res;
 };

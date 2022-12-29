@@ -1,4 +1,5 @@
 import React from "react";
+import data from "/imports/ui/data/comunas-regiones.json";
 
 interface Props {
     value: string;
